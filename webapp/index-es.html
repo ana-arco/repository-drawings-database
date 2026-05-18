@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive - Nordic Optical Telescope</title>
+    <link rel="icon" href="/images/notlogo3_100pix">
+</head>
+
+<body
+    style="font-family: system-ui, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh;">
+
+    <header style="padding: 1rem 2rem; border-bottom: 1px solid #eaeaea;">
+        <div style="text-align: right; font-size: 0.9rem;">
+            <nav aria-label="Selector de idioma">
+                <a href="index.html" aria-current="page"
+                    style="text-decoration: none; color: #000; font-weight: bold;">ES</a>
+                <span aria-hidden="true" style="color: #ccc;"> / </span>
+                <a href="index-en.html" style="text-decoration: none; color: #888;">EN</a>
+            </nav>
+        </div>
+        <div>
+            <h1 style="margin: 0; font-weight: 300; letter-spacing: -0.5px;">Design Database</h1>
+            <p
+                style="margin: 0.2rem 0 0 0; color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                Nordic Optical Telescope</p>
+        </div>
+    </header>
+
+    <div style="display: flex; flex: 1; overflow: hidden;">
+
+        <aside
+            style="width: 300px; padding: 2rem; border-right: 1px solid #eaeaea; overflow-y: auto; background-color: #fafafa;">
+            <h2 style="font-size: 1rem; color: #333; margin-bottom: 1.5rem;">Estructura del Proyecto</h2>
+            <nav>
+                <details open>
+                    <summary style="cursor: pointer; font-weight: 500; margin-bottom: 0.5rem;">T00 Telescope</summary>
+                    <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
+
+                        <details>
+                            <summary style="cursor: pointer; margin-bottom: 0.5rem;">T04 Telescope Fork</summary>
+                            <div style="margin-left: 1.5rem; margin-top: 0.5rem; color: #555;">
+                                <p style="margin: 0.2rem 0; cursor: pointer;">↳ 01 Fork Structure</p>
+                                <p style="margin: 0.2rem 0; cursor: pointer;">↳ 02 Bearings</p>
+                            </div>
+                        </details>
+
+                        <details>
+                            <summary style="cursor: pointer; margin-bottom: 0.5rem;">T05 Tube</summary>
+                            <div style="margin-left: 1.5rem; margin-top: 0.5rem; color: #555;">
+                                <p style="margin: 0.2rem 0; cursor: pointer;">↳ 01 Mirror Cell</p>
+                            </div>
+                        </details>
+
+                    </div>
+                </details>
+            </nav>
+        </aside>
+
+        <main style="flex: 1; padding: 2rem; overflow-y: auto;">
+
+            <section style="margin-bottom: 3rem;">
+                <h2
+                    style="font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 1px solid #eaeaea; padding-bottom: 0.5rem;">
+                    Búsqueda de Planos</h2>
+                <form action="#" method="GET" style="display: flex; gap: 1rem; align-items: flex-end;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="catalog" style="font-size: 0.85rem; color: #666; margin-bottom: 0.3rem;">Código (Ej.
+                            T01.00.08)</label>
+                        <input type="text" id="catalog" name="catalog" style="padding: 0.5rem; border: 1px solid #ccc;">
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="material"
+                            style="font-size: 0.85rem; color: #666; margin-bottom: 0.3rem;">Material</label>
+                        <select id="material" name="material"
+                            style="padding: 0.5rem; border: 1px solid #ccc; width: 150px;">
+                            <option value="">Todos</option>
+                            <option value="steel">St 37-2</option>
+                            <option value="alu">Aluminum</option>
+                        </select>
+                    </div>
+                    <button type="submit"
+                        style="padding: 0.5rem 1.5rem; background-color: #222; color: white; border: none; cursor: pointer;">Buscar</button>
+                </form>
+            </section>
+
+            <section>
+                <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">Documentos en 'Fork Structure'</h2>
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #222;">
+                            <th style="padding: 0.8rem 0.5rem;">Catálogo</th>
+                            <th style="padding: 0.8rem 0.5rem;">Pieza</th>
+                            <th style="padding: 0.8rem 0.5rem;">Material</th>
+                            <th style="padding: 0.8rem 0.5rem;">Autor</th>
+                            <th style="padding: 0.8rem 0.5rem;">Fecha</th>
+                            <th style="padding: 0.8rem 0.5rem;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plano in lista_planos %}
+                        <tr style="border-bottom: 1px solid #eaeaea;">
+                            <td style="padding: 0.8rem 0.5rem; font-family: monospace;">{{ plano.catalog_code }}</td>
+                            <td style="padding: 0.8rem 0.5rem;">{{ plano.piece_name }}</td>
+                            <td style="padding: 0.8rem 0.5rem;">{{ plano.material }}</td>
+                            <td style="padding: 0.8rem 0.5rem;">{{ plano.author_initials }}</td>
+                            <td style="padding: 0.8rem 0.5rem;">{{ plano.author_date }}</td>
+                            <td style="padding: 0.8rem 0.5rem;"><a href="#" style="color: #000;">Ver Plano</a></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="padding: 1rem; text-align: center; color: #666;">No hay planos
+                                registrados todavía.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+
+</html>
