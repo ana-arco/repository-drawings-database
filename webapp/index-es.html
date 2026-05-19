@@ -4,114 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archive - Nordic Optical Telescope</title>
-    <link rel="icon" href="/images/notlogo3_100pix">
+    <title>Archivo de Planos - NOT </title>
+    <link rel="icon" href="images/notlogo3_100pix.png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
-<body
-    style="font-family: system-ui, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh;">
+<body>
 
-    <header style="padding: 1rem 2rem; border-bottom: 1px solid #eaeaea;">
-        <div style="text-align: right; font-size: 0.9rem;">
+    <header>
+        <div class="language-selector">
             <nav aria-label="Selector de idioma">
-                <a href="index.html" aria-current="page"
-                    style="text-decoration: none; color: #000; font-weight: bold;">ES</a>
-                <span aria-hidden="true" style="color: #ccc;"> / </span>
-                <a href="index-en.html" style="text-decoration: none; color: #888;">EN</a>
+                <a href="index-es.html" aria-current="page" class="active">ES</a>
+                <span aria-hidden="true"> / </span>
+                <a href="index-en.html">EN</a>
             </nav>
         </div>
-        <div>
-            <h1 style="margin: 0; font-weight: 300; letter-spacing: -0.5px;">Design Database</h1>
-            <p
-                style="margin: 0.2rem 0 0 0; color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
-                Nordic Optical Telescope</p>
+        <div class="header-content">
+            <img src="images/notlogo3_100pix.png" alt="NOT Logo" class="logo">
+            <div>
+                <h1 class="main-title">Base de Datos de Planos</h1>
+                <p class="sub-title">Nordic Optical Telescope</p>
+            </div>
         </div>
     </header>
 
-    <div style="display: flex; flex: 1; overflow: hidden;">
+    <div class="content-wrapper">
 
-        <aside
-            style="width: 300px; padding: 2rem; border-right: 1px solid #eaeaea; overflow-y: auto; background-color: #fafafa;">
-            <h2 style="font-size: 1rem; color: #333; margin-bottom: 1.5rem;">Estructura del Proyecto</h2>
+        <aside class="sidebar">
+            <h2>Estructura del Proyecto</h2>
             <nav>
+                {% macro render_tree(tree_dict) %}
+                    {% for code, node in tree_dict.items() %}
+                        {% if node.children %}
+                            <details>
+                                <summary>{{ code }} {{ node.name }}</summary>
+                                <div>
+                                    {{ render_tree(node.children) }}
+                                </div>
+                            </details>
+                        {% else %}
+                            <p class="item">↳ {{ code }} {{ node.name }}</p>
+                        {% endif %}
+                    {% endfor %}
+                {% endmacro %}
+                
                 <details open>
-                    <summary style="cursor: pointer; font-weight: 500; margin-bottom: 0.5rem;">T00 Telescope</summary>
-                    <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
-
-                        <details>
-                            <summary style="cursor: pointer; margin-bottom: 0.5rem;">T04 Telescope Fork</summary>
-                            <div style="margin-left: 1.5rem; margin-top: 0.5rem; color: #555;">
-                                <p style="margin: 0.2rem 0; cursor: pointer;">↳ 01 Fork Structure</p>
-                                <p style="margin: 0.2rem 0; cursor: pointer;">↳ 02 Bearings</p>
-                            </div>
-                        </details>
-
-                        <details>
-                            <summary style="cursor: pointer; margin-bottom: 0.5rem;">T05 Tube</summary>
-                            <div style="margin-left: 1.5rem; margin-top: 0.5rem; color: #555;">
-                                <p style="margin: 0.2rem 0; cursor: pointer;">↳ 01 Mirror Cell</p>
-                            </div>
-                        </details>
-
+                    <summary>T00 - 2.5m Telescope</summary>
+                    <div>
+                        {{ render_tree(estructura.get('T00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>A00 - Telescope Adaptor</summary>
+                    <div>
+                        {{ render_tree(estructura.get('A00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>X00 - Building</summary>
+                    <div>
+                        {{ render_tree(estructura.get('X00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>W00 - Weather Station</summary>
+                    <div>
+                        {{ render_tree(estructura.get('W00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>FM00 - Filter Mechanism</summary>
+                    <div>
+                        {{ render_tree(estructura.get('FM00', {}).get('children', {})) }}
                     </div>
                 </details>
             </nav>
         </aside>
 
-        <main style="flex: 1; padding: 2rem; overflow-y: auto;">
+        <main>
 
-            <section style="margin-bottom: 3rem;">
-                <h2
-                    style="font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 1px solid #eaeaea; padding-bottom: 0.5rem;">
-                    Búsqueda de Planos</h2>
-                <form action="#" method="GET" style="display: flex; gap: 1rem; align-items: flex-end;">
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="catalog" style="font-size: 0.85rem; color: #666; margin-bottom: 0.3rem;">Código (Ej.
-                            T01.00.08)</label>
-                        <input type="text" id="catalog" name="catalog" style="padding: 0.5rem; border: 1px solid #ccc;">
+            <section class="section-container">
+                <h2 class="section-title">Búsqueda de Planos</h2>
+                <form action="#" method="GET" class="search-form">
+                    <div class="form-group">
+                        <label for="catalog">Código (Ej. T01.00.08)</label>
+                        <input type="text" id="catalog" name="catalog">
                     </div>
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="material"
-                            style="font-size: 0.85rem; color: #666; margin-bottom: 0.3rem;">Material</label>
-                        <select id="material" name="material"
-                            style="padding: 0.5rem; border: 1px solid #ccc; width: 150px;">
+                    <div class="form-group">
+                        <label for="material">Material</label>
+                        <select id="material" name="material">
                             <option value="">Todos</option>
                             <option value="steel">St 37-2</option>
                             <option value="alu">Aluminum</option>
                         </select>
                     </div>
-                    <button type="submit"
-                        style="padding: 0.5rem 1.5rem; background-color: #222; color: white; border: none; cursor: pointer;">Buscar</button>
+                    <button type="submit" class="btn-search">Buscar</button>
                 </form>
             </section>
 
             <section>
-                <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">Documentos en 'Fork Structure'</h2>
-                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                <h2 class="section-title-simple">Documentos en 'Fork Structure'</h2>
+                <table class="data-table">
                     <thead>
-                        <tr style="border-bottom: 2px solid #222;">
-                            <th style="padding: 0.8rem 0.5rem;">Catálogo</th>
-                            <th style="padding: 0.8rem 0.5rem;">Pieza</th>
-                            <th style="padding: 0.8rem 0.5rem;">Material</th>
-                            <th style="padding: 0.8rem 0.5rem;">Autor</th>
-                            <th style="padding: 0.8rem 0.5rem;">Fecha</th>
-                            <th style="padding: 0.8rem 0.5rem;">Acción</th>
+                        <tr>
+                            <th>Catálogo</th>
+                            <th>Pieza</th>
+                            <th>Material</th>
+                            <th>Autor</th>
+                            <th>Fecha</th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for plano in lista_planos %}
-                        <tr style="border-bottom: 1px solid #eaeaea;">
-                            <td style="padding: 0.8rem 0.5rem; font-family: monospace;">{{ plano.catalog_code }}</td>
-                            <td style="padding: 0.8rem 0.5rem;">{{ plano.piece_name }}</td>
-                            <td style="padding: 0.8rem 0.5rem;">{{ plano.material }}</td>
-                            <td style="padding: 0.8rem 0.5rem;">{{ plano.author_initials }}</td>
-                            <td style="padding: 0.8rem 0.5rem;">{{ plano.author_date }}</td>
-                            <td style="padding: 0.8rem 0.5rem;"><a href="#" style="color: #000;">Ver Plano</a></td>
+                        <tr>
+                            <td class="code">{{ plano.catalog_code }}</td>
+                            <td>{{ plano.piece_name }}</td>
+                            <td>{{ plano.material }}</td>
+                            <td>{{ plano.author_initials }}</td>
+                            <td>{{ plano.author_date }}</td>
+                            <td><a href="#">Ver Plano</a></td>
                         </tr>
                         {% else %}
-                        <tr>
-                            <td colspan="6" style="padding: 1rem; text-align: center; color: #666;">No hay planos
-                                registrados todavía.</td>
+                        <tr class="empty-row">
+                            <td colspan="6">No hay planos registrados todavía.</td>
                         </tr>
                         {% endfor %}
                     </tbody>

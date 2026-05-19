@@ -1,51 +1,126 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawings Database - Nordic Optical Telescope</title>
+    <title>Drawings Archive - NOT</title>
     <link rel="icon" href="images/notlogo3_100pix.png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
     <header>
-        <div style="text-align: right;">
-            <nav aria-label="Selector de idioma">
-                <a href="index.html" aria-current="page" style="text-decoration: none; color: inherit;">ES</a>
+        <div class="language-selector">
+            <nav aria-label="Language selector">
+                <a href="index-es.html">ES</a>
                 <span aria-hidden="true"> / </span>
-                <a href="index-en.html" style="text-decoration: none; color: gray;">EN</a>
+                <a href="index-en.html" aria-current="page" class="active">EN</a>
             </nav>
         </div>
-        <div>
-            <h1>Design Database - Digital Archive</h1>
-            <p>Nordic Optical Telescope Scientific Association</p>
+        <div class="header-content">
+            <img src="images/notlogo3_100pix.png" alt="NOT Logo" class="logo">
+            <div>
+                <h1 class="main-title">Drawings Database</h1>
+                <p class="sub-title">Nordic Optical Telescope</p>
+            </div>
         </div>
     </header>
 
-    <aside>
-        <h2>Estructura del Telescopio</h2>
-        <nav>
-            <p>(Aquí irá el árbol de carpetas: T00 > T04...)</p>
-        </nav>
-    </aside>
+    <div class="content-wrapper">
 
-    <main>
-        <section>
-            <h2>Buscador de Planos</h2>
-            <p>(Aquí irá el formulario de búsqueda)</p>
-        </section>
+        <aside class="sidebar">
+            <h2>Project Structure</h2>
+            <nav>
+                <details open>
+                    <summary>T00 - 2.5m Telescope</summary>
+                    <div>
+                        {{ render_tree(estructura.get('T00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>A00 - Telescope Adaptor</summary>
+                    <div>
+                        {{ render_tree(estructura.get('A00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>X00 - Building</summary>
+                    <div>
+                        {{ render_tree(estructura.get('X00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>W00 - Weather Station</summary>
+                    <div>
+                        {{ render_tree(estructura.get('W00', {}).get('children', {})) }}
+                    </div>
+                </details>
+                <details>
+                    <summary>FM00 - Filter Mechanism</summary>
+                    <div>
+                        {{ render_tree(estructura.get('FM00', {}).get('children', {})) }}
+                    </div>
+                </details>
+            </nav>
+        </aside>
 
-        <section>
-            <h2>Resultados: Sección Actual</h2>
-            <p>(Aquí irá la tabla con los registros de la base de datos)</p>
-        </section>
-    </main>
+        <main>
 
-    <footer>
-        <p>&copy; 2026 Archivo Histórico de Ingeniería - NOT</p>
-    </footer>
+            <section class="section-container">
+                <h2 class="section-title">Drawings Search</h2>
+                <form action="#" method="GET" class="search-form">
+                    <div class="form-group">
+                        <label for="catalog">Code (e.g., T01.00.08)</label>
+                        <input type="text" id="catalog" name="catalog">
+                    </div>
+                    <div class="form-group">
+                        <label for="material">Material</label>
+                        <select id="material" name="material">
+                            <option value="">All</option>
+                            <option value="steel">St 37-2</option>
+                            <option value="alu">Aluminum</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-search">Search</button>
+                </form>
+            </section>
+
+            <section>
+                <h2 class="section-title-simple">Documents in 'Fork Structure'</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Catalog</th>
+                            <th>Part</th>
+                            <th>Material</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plano in lista_planos %}
+                        <tr>
+                            <td class="code">{{ plano.catalog_code }}</td>
+                            <td>{{ plano.piece_name }}</td>
+                            <td>{{ plano.material }}</td>
+                            <td>{{ plano.author_initials }}</td>
+                            <td>{{ plano.author_date }}</td>
+                            <td><a href="#">View Drawing</a></td>
+                        </tr>
+                        {% else %}
+                        <tr class="empty-row">
+                            <td colspan="6">No drawings registered yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
 
 </body>
 
