@@ -71,11 +71,11 @@ def get_project_structure():
 def conectar_bd():
     try:
         conexion = mariadb.connect(
-            user="tu_usuario",      # Cambia esto por tu usuario de MariaDB
-            password="tu_password", # Cambia esto por tu contraseña
-            host="localhost",
-            port=3306,
-            database="planos_telescopio"
+            user=os.environ.get("DB_USER", "tu_usuario"),      # Cambia esto por tu usuario de MariaDB
+            password=os.environ.get("DB_PASSWORD", "tu_password"), # Cambia esto por tu contraseña
+            host=os.environ.get("DB_HOST", "localhost"),
+            port=int(os.environ.get("DB_PORT", 3306)),
+            database=os.environ.get("DB_NAME", "planos_telescopio")
         )
         return conexion
     except mariadb.Error as e:
@@ -91,9 +91,9 @@ def inicio():
     if conexion:
         cursor = conexion.cursor(dictionary=True)
         consulta = """
-            SELECT catalog_code, piece_name, material, author_initials, author_date 
+            SELECT catalog_code, piece_name, material, author_initials, author_date, enlace 
             FROM drawings 
-            LIMIT 10
+            LIMIT 100
         """
         try:
             cursor.execute(consulta)
@@ -113,9 +113,9 @@ def inicio_en():
     if conexion:
         cursor = conexion.cursor(dictionary=True)
         consulta = """
-            SELECT catalog_code, piece_name, material, author_initials, author_date 
+            SELECT catalog_code, piece_name, material, author_initials, author_date, enlace 
             FROM drawings 
-            LIMIT 10
+            LIMIT 100
         """
         try:
             cursor.execute(consulta)

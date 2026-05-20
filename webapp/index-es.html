@@ -123,7 +123,13 @@
                             <td>{{ plano.material }}</td>
                             <td>{{ plano.author_initials }}</td>
                             <td>{{ plano.author_date }}</td>
-                            <td><a href="#">Ver Plano</a></td>
+                            <td>
+                                {% if plano.enlace %}
+                                <a href="{{ plano.enlace }}" target="_blank" class="btn-view">Ver Plano</a>
+                                {% else %}
+                                <span class="no-link">-</span>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% else %}
                         <tr class="empty-row">

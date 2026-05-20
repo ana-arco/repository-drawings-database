@@ -1,0 +1,46 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: drawings_mariadb
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: root_super_secret_pwd_991
+      MARIADB_DATABASE: planos_telescopio
+      MARIADB_USER: db_user_drawings
+      MARIADB_PASSWORD: db_password_drawings_987
+    volumes:
+      - db_data:/var/lib/mysql
+      # Mount the db-init directory containing init.sql to automatically set up schema and mock data
+      - ./db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: drawings_flask_web
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=planos_telescopio
+      - DB_USER=db_user_drawings
+      - DB_PASSWORD=db_password_drawings_987
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    volumes:
+      # Mount workspace locally for live development / hot-reloading
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
+    driver: local

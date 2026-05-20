@@ -33,6 +33,21 @@
         <aside class="sidebar">
             <h2>Project Structure</h2>
             <nav>
+                {% macro render_tree(tree_dict) %}
+                    {% for code, node in tree_dict.items() %}
+                         {% if node.children %}
+                             <details>
+                                 <summary>{{ code }} {{ node.name }}</summary>
+                                 <div>
+                                     {{ render_tree(node.children) }}
+                                 </div>
+                             </details>
+                         {% else %}
+                             <p class="item">↳ {{ code }} {{ node.name }}</p>
+                         {% endif %}
+                    {% endfor %}
+                {% endmacro %}
+                
                 <details open>
                     <summary>T00 - 2.5m Telescope</summary>
                     <div>
@@ -108,7 +123,13 @@
                             <td>{{ plano.material }}</td>
                             <td>{{ plano.author_initials }}</td>
                             <td>{{ plano.author_date }}</td>
-                            <td><a href="#">View Drawing</a></td>
+                            <td>
+                                {% if plano.enlace %}
+                                <a href="{{ plano.enlace }}" target="_blank" class="btn-view">View Drawing</a>
+                                {% else %}
+                                <span class="no-link">-</span>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% else %}
                         <tr class="empty-row">
