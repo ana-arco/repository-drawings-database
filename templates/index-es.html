@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archivo de Planos - NOT </title>
-    <link rel="icon" href="images/notlogo3_100pix.png">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/static/images/notlogo3_100pix.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <link rel="stylesheet" href="./static/styles.css">
 </head>
 
 <body>
@@ -21,6 +23,7 @@
         </div>
         <div class="header-content">
             <img src="images/notlogo3_100pix.png" alt="NOT Logo" class="logo">
+            <img src="/static/images/notlogo3_100pix.png" alt="NOT Logo">
             <div>
                 <h1 class="main-title">Base de Datos de Planos</h1>
                 <p class="sub-title">Nordic Optical Telescope</p>

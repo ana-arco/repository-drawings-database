@@ -4,7 +4,7 @@ services:
     container_name: drawings_mariadb
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       MARIADB_ROOT_PASSWORD: root_super_secret_pwd_991
       MARIADB_DATABASE: planos_telescopio

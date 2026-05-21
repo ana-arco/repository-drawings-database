@@ -82,7 +82,7 @@ def parse_and_upload(csv_path):
         db_port = int(os.environ.get("DB_PORT", 3306))
         db_name = os.environ.get("DB_NAME", "planos_telescopio")
 
-        print(f"🔌 Conectando a MariaDB en {db_host}:{db_port}...")
+        print(f"Conectando a MariaDB en {db_host}:{db_port}...")
         try:
             conn = mariadb.connect(
                 user=db_user,
@@ -98,9 +98,9 @@ def parse_and_upload(csv_path):
             cursor.execute("SHOW COLUMNS FROM drawings LIKE 'enlace'")
             col_exists = cursor.fetchone()
             if not col_exists:
-                print("🔧 Columna 'enlace' no detectada en la tabla. Migrando esquema de base de datos...")
+                print("Columna 'enlace' no detectada en la tabla. Migrando esquema de base de datos...")
                 cursor.execute("ALTER TABLE drawings ADD COLUMN enlace VARCHAR(500) NULL")
-                print("✅ Columna 'enlace' añadida con éxito.")
+                print("Columna 'enlace' añadida con éxito.")
 
             # Truncate old table entries to avoid duplicate bloat
             cursor.execute("TRUNCATE TABLE drawings")
@@ -140,9 +140,9 @@ def parse_and_upload(csv_path):
             print(f"🎉 ¡Éxito! Se han importado {inserted_count} planos correctamente a la base de datos.")
 
         except mariadb.Error as e:
-            print(f"❌ Error de MariaDB: {e}")
+            print(f"Error de MariaDB: {e}")
 
 if __name__ == "__main__":
     csv_file = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..", "data", "drive.csv")
-    print(f"📂 Iniciando importación desde: {csv_file}")
+    print(f"Iniciando importación desde: {csv_file}")
     parse_and_upload(csv_file)

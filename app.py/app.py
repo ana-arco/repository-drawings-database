@@ -4,7 +4,12 @@ import sys
 import os
 import csv
 
-app = Flask(__name__, template_folder='../webapp', static_folder='../webapp')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+WEBAPP = os.path.join(BASE_DIR, "..", "webapp")
+
+app = Flask(__name__,
+            template_folder=os.path.join(WEBAPP, "templates"),
+            static_folder=os.path.join(WEBAPP, "static"))
 
 def get_project_structure():
     tree = {
